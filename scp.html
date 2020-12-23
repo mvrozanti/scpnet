@@ -1,22 +1,93 @@
 <html>
-  <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/graphdracula/1.0.3/dracula.min.js"></script>
-  <script type="text/javascript">
-    var g = new Dracula.Graph();
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/raphael/2.3.0/raphael.min.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/graphdracula/1.2.1/dracula.min.js"></script>
+    <div id="canvas" style="overflow: hidden; background: white"></div>
+    <script>
+        var g = new Dracula.Graph();
+        g.addEdge("SCP-3", "SCP-1512");
+        g.addEdge("SCP-3", "SCP-2756");
+        g.addEdge("SCP-8", "SCP-500");
+        g.addEdge("SCP-9", "SCP-3023");
+        g.addEdge("SCP-9", "SCP-107");
+        g.addEdge("SCP-9", "SCP-507");
+        g.addEdge("SCP-18", "SCP-006");
+        g.addEdge("SCP-23", "SCP-1111");
+        g.addEdge("SCP-25", "SCP-173");
+        g.addEdge("SCP-27", "SCP-1772");
+        g.addEdge("SCP-28", "SCP-2669");
+        g.addEdge("SCP-28", "SCP-1995");
+        g.addEdge("SCP-29", "SCP-2820");
+        g.addEdge("SCP-31", "SCP-1937");
+        g.addEdge("SCP-35", "SCP-148");
+        g.addEdge("SCP-35", "SCP-101");
+        g.addEdge("SCP-35", "SCP-4715");
+        g.addEdge("SCP-35", "SCP-682");
+        g.addEdge("SCP-35", "SCP-132");
+        g.addEdge("SCP-38", "SCP-500");
+        g.addEdge("SCP-38", "SCP-173");
+        g.addEdge("SCP-39", "SCP-1328");
+        g.addEdge("SCP-39", "SCP-1513");
+        g.addEdge("SCP-41", "SCP-239");
+        g.addEdge("SCP-44", "SCP-44");
+        g.addEdge("SCP-46", "SCP-1250");
+        g.addEdge("SCP-52", "SCP-699");
+        g.addEdge("SCP-52", "SCP-008");
+        g.addEdge("SCP-63", "SCP-2207");
+        g.addEdge("SCP-73", "SCP-1427");
+        g.addEdge("SCP-73", "SCP-2711");
+        g.addEdge("SCP-73", "SCP-2481");
+        g.addEdge("SCP-73", "SCP-1216");
+        g.addEdge("SCP-73", "SCP-076");
+        g.addEdge("SCP-75", "SCP-294");
+        g.addEdge("SCP-79", "SCP-682");
+        g.addEdge("SCP-79", "SCP-076");
+        g.addEdge("SCP-85", "SCP-914");
+        g.addEdge("SCP-85", "SCP-067");
+        g.addEdge("SCP-94", "SCP-1032");
+        g.addEdge("SCP-97", "SCP-2171");
+        g.addEdge("SCP-104", "SCP-1680");
+        g.addEdge("SCP-105", "SCP-076");
+        g.addEdge("SCP-107", "SCP-009");
+        g.addEdge("SCP-107", "SCP-447");
+        g.addEdge("SCP-107", "SCP-874");
+        g.addEdge("SCP-109", "SCP-402");
+        g.addEdge("SCP-117", "SCP-682");
+        g.addEdge("SCP-117", "SCP-882");
+        g.addEdge("SCP-122", "SCP-3060");
+        g.addEdge("SCP-122", "SCP-1837");
+        g.addEdge("SCP-131", "SCP-689");
+        g.addEdge("SCP-131", "SCP-173");
+        g.addEdge("SCP-135", "SCP-427");
+        g.addEdge("SCP-135", "SCP-329");
+        g.addEdge("SCP-153", "SCP-2717");
+        g.addEdge("SCP-154", "SCP-1884");
+        g.addEdge("SCP-158", "SCP-2306");
+        g.addEdge("SCP-158", "SCP-1875");
+        g.addEdge("SCP-158", "SCP-217");
+        g.addEdge("SCP-158", "SCP-168");
+        g.addEdge("SCP-161", "SCP-2933");
+        g.addEdge("SCP-162", "SCP-1114");
+        g.addEdge("SCP-162", "SCP-1063");
+        g.addEdge("SCP-167", "SCP-184");
+        g.addEdge("SCP-171", "SCP-165");
+        g.addEdge("SCP-171", "SCP-968");
+        g.addEdge("SCP-172", "SCP-2776");
+        g.addEdge("SCP-181", "SCP-082");
+        g.addEdge("SCP-181", "SCP-216");
+        g.addEdge("SCP-181", "SCP-075");
+        g.addEdge("SCP-182", "SCP-682");
+        g.addEdge("SCP-182", "SCP-076");
+        g.addEdge("SCP-187", "SCP-120");
 
-    g.addEdge("strawberry", "cherry");
-    g.addEdge("strawberry", "apple");
-    g.addEdge("strawberry", "tomato");
 
-    g.addEdge("tomato", "apple");
-    g.addEdge("tomato", "kiwi");
+        var layouter = new Dracula.Layout.Spring(g);
+        layouter.layout();
 
-    g.addEdge("cherry", "apple");
-    g.addEdge("cherry", "kiwi");
-
-    var layouter = new Dracula.Layout.Spring(g);
-    layouter.layout();
-
-    var renderer = new Dracula.Renderer.Raphael('canvas', g, 400, 300);
-    renderer.draw();
-  </script>
+        var w = window.innerWidth;
+        var h = window.innerHeight;
+        var renderer = new Dracula.Renderer.Raphael(
+            document.getElementById('canvas'), 
+            g, w-10, h-20);
+        renderer.draw();
+    </script>
 </html>
