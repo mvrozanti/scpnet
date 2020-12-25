@@ -23,30 +23,6 @@ def generateSCPdocument(scpnum=None):
     if scpnum is None:
         scupnum = random.randint(0,MAX_SCPNUM_EXCLUSIVE)
     page = requests.get(f'http://www.scp-wiki.net/scp-{format_scp_num(scpnum)}')
-    tree = html.fromstring(page.content)
-    content = tree.xpath('//div[@id="page-content"]//p')
-    ps = ["".join(item.xpath('.//text()')) for item in content]
-    if 'This page doesn\'t exist yet!' in page.text:
-        return ''
-    if len(ps) == 0:
-        exit('File does not exist. Please enter a valid SCP item number.')
-    final = ''
-    object_class = None
-    for item in ps:
-        if item[0:6] == 'Item #' or \
-                item[0:12] == 'Object Class' or \
-                item[0:15] == 'Special Contain' or \
-                item[0:11] == 'Description' or \
-                item[0:8] == 'Addendum':
-                # if item[0:12] == 'Object Class':
-                final += '-'*79 + '\n\n'
-        final += item + '\n\n'
-    return final, object_class
-
-def generateSCPdocument2(scpnum=None):
-    if scpnum is None:
-        scupnum = random.randint(0,MAX_SCPNUM_EXCLUSIVE)
-    page = requests.get(f'http://www.scp-wiki.net/scp-{format_scp_num(scpnum)}')
     bs = BeautifulSoup(page.text, 'html.parser')
     bs_filtered_text = re.sub(r'<sup.+?>.*</sup>', '', str(bs.html))
     tree = html.fromstring(bs_filtered_text)
@@ -87,71 +63,6 @@ def get_relations(scpnum, document):
     matches = re.findall('(?!« )SCP-(\d+)(?! »)', document, re.MULTILINE)
     return set(filter(scpnum.__ne__, matches))
 
-def to_js(relations):
-    js = ''
-    for scpnum, relations in relations.items():
-        for relation in relations:
-            js += f'g.addEdge("SCP-{scpnum}", "SCP-{relation}");\n'
-    return js
-
-# test https://graus.nu/blog/force-directed-graphs-playing-around-with-d3-js/
-# test https://philogb.github.io/jit/demos.html
-def generate_html():
-    all_relations = {}
-    for scpnum in range(1, MAX_SCPNUM_EXCLUSIVE):
-        filename = f'documents/SCP-{format_scp_num(scpnum)}.txt'
-        if op.exists(filename):
-            document = '\n'.join(open(filename, 'r').readlines())
-        else:
-            document = generateSCPdocument(scpnum)
-            open(filename, 'w').write(document)
-        relations = get_relations(scpnum, document)
-        if relations:
-            all_relations[scpnum] = relations
-            print(scpnum, relations)
-    js = to_js(all_relations)
-    lines = open('scp.html.template', 'r').readlines()
-    output_lines = []
-    for line in lines:
-        output_lines.append(line.replace('xxx', js))
-    open('scp.html', 'w').writelines(output_lines)
-
-def to_js2(all_relations):
-    data = []
-    for scpnum, adjacencies in all_relations.items():
-        kek = []
-        for adjacency in adjacencies:
-            kek.append({ 
-                'nodeTo': adjacency,
-                'data': {'weight':1}
-                        })
-        data.append({
-            'id': str(scpnum),
-            'name': f'SCP-{format_scp_num(scpnum)}',
-            'data': {
-                '$dim': 10,
-                '$type': 'star'
-                },
-            'adjacencies': kek
-            })
-    return data
-
-def generate_html2():
-    all_relations = {}
-    for scpnum in range(1, 500):
-        filename = f'documents/SCP-{format_scp_num(scpnum)}.txt'
-        if op.exists(filename):
-            document = '\n'.join(open(filename, 'r').readlines())
-        else:
-            document = generateSCPdocument(scpnum)
-            open(filename, 'w').write(document)
-        relations = get_relations(scpnum, document)
-        if relations:
-            all_relations[scpnum] = relations
-            print(scpnum, relations)
-    js = to_js2(all_relations)
-    open('hypertree/Jit/Examples/Hypertree/data.js', 'w').write("data='"+json.dumps(js)+"'")
-
 def generate_graphistry():
     src = []
     dst = []
@@ -167,7 +78,7 @@ def generate_graphistry():
             document, full_class = pickle.load(open(filename, 'rb'))
             # document = '\n'.join(open(filename, 'r').readlines())
         else:
-            document, full_class = generateSCPdocument2(scpnum)
+            document, full_class = generateSCPdocument(scpnum)
             pickle.dump((document, full_class), open(filename), 'wb')
             # open(filename, 'w').write(document)
         relations = get_relations(scpnum, document)
@@ -239,5 +150,5 @@ if __name__ == '__main__':
                 document, object_class = pickle.load(open(filename, 'rb'))
                 # document = '\n'.join(open(filename, 'r').readlines())
             else:
-                document, object_class = generateSCPdocument2(scpnum)
+                document, object_class = generateSCPdocument(scpnum)
                 pickle.dump((document, object_class), open(filename, 'wb'))
