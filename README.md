@@ -1,5 +1,14 @@
-# SCPnet
-A python webscraper for accessing SCP Foundation files via bash.
+SCPnet is a python webscraper for accessing SCP Foundation files via shell
 
-Usage: ./scpnet [SCP#]
-Running scpnet without an SCP item number will generate a random file.
+
+```
+
+usage: ./scpnet.py [-h] [-g] [-s] [-S NUM]
+
+optional arguments:
+  -h, --help            show this help message and exit
+  -g, --graph           generate scp.html
+  -s, --scrape          scrape wiki
+  -S NUM, --single NUM  scrape specific scp
+
+```
