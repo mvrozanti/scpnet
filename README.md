@@ -12,3 +12,5 @@ optional arguments:
   -S NUM, --single NUM  scrape specific scp
 
 ```
+
+![https://i.imgur.com/FFW6QG0.png](the graph)
