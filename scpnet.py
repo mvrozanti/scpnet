@@ -1,4 +1,4 @@
-#!/usr/bin/env python3
+#!/usr/bin/env python
 from bs4 import BeautifulSoup
 from lxml import html
 import argparse
@@ -12,6 +12,7 @@ import random
 import re
 import requests
 import sys
+from time import sleep
 
 MAX_SCPNUM_EXCLUSIVE = 6000
 
@@ -154,3 +155,4 @@ if __name__ == '__main__':
             else:
                 document, object_class = generateSCPdocument(scpnum)
                 pickle.dump((document, object_class), open(filename, 'wb'))
+                sleep(0.5) # respect the site :)
