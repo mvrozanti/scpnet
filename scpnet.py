@@ -155,4 +155,4 @@ if __name__ == '__main__':
             else:
                 document, object_class = generateSCPdocument(scpnum)
                 pickle.dump((document, object_class), open(filename, 'wb'))
-                sleep(0.5)
+                sleep(0.5) # respect the site :)
